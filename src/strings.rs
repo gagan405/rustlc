@@ -31,6 +31,26 @@ pub fn str_str(haystack: String, needle: String) -> i32 {
     -1
 }
 
+pub fn fizz_buzz(n: i32) -> Vec<String> {
+    let mut res: Vec<String> = Vec::new();
+    for i in 1..=n {
+        let divisible_by_fizz = i % 3 == 0;
+        let divisible_by_buzz = i % 5 == 0;
+
+        let mut str = String::new();
+
+        if divisible_by_fizz { str.push_str("Fizz"); }
+        if divisible_by_buzz { str.push_str("Buzz"); }
+
+        if !divisible_by_buzz && !divisible_by_fizz {
+            res.push(i.to_string());
+        } else {
+            res.push(str.to_string());
+        }
+    }
+    res
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -47,5 +67,10 @@ mod tests {
         assert_eq!(str_str("a".to_string(), String::from("a")), 0);
         assert_eq!(str_str("sadbutsad".to_string(), String::from("sad")), 0);
         assert_eq!(str_str("sadbutsad".to_string(), String::from("bakchod")), -1);
+    }
+
+    #[test]
+    fn test_fizz_buzz() {
+        assert_eq!(fizz_buzz(15), vec!["1","2","Fizz","4","Buzz","Fizz","7","8","Fizz","Buzz","11","Fizz","13","14","FizzBuzz"]);
     }
 }
