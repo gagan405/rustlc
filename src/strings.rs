@@ -51,6 +51,34 @@ pub fn fizz_buzz(n: i32) -> Vec<String> {
     res
 }
 
+pub fn roman_to_int(s: String) -> i32 {
+    if s.is_empty() { return 0; }
+
+    let map: HashMap<char, i32> = HashMap::from([
+        ('I', 1),
+        ('V', 5),
+        ('X', 10),
+        ('L', 50),
+        ('C', 100),
+        ('D', 500),
+        ('M', 1000),
+    ]);
+
+    let mut num = *map.get(&s.chars().nth(s.len() - 1).unwrap()).unwrap();
+
+    for i in (0..s.len() - 1).rev() {
+        let curr = map.get(&s.chars().nth(i).unwrap()).unwrap();
+        let prev = map.get(&s.chars().nth(i + 1).unwrap()).unwrap();
+
+        if curr < prev {
+            num = num - curr;
+        } else {
+            num = num + curr;
+        }
+    }
+    num
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -72,5 +100,11 @@ mod tests {
     #[test]
     fn test_fizz_buzz() {
         assert_eq!(fizz_buzz(15), vec!["1","2","Fizz","4","Buzz","Fizz","7","8","Fizz","Buzz","11","Fizz","13","14","FizzBuzz"]);
+    }
+
+    #[test]
+    fn test_roman_to_int() {
+        assert_eq!(roman_to_int(String::from("IV")), 4);
+        assert_eq!(roman_to_int(String::from("MCMXCIV")), 1994);
     }
 }
