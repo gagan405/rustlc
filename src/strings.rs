@@ -79,6 +79,30 @@ pub fn roman_to_int(s: String) -> i32 {
     num
 }
 
+pub fn longest_common_prefix(strs: Vec<String>) -> String {
+    if strs.is_empty() {
+        return String::new();
+    }
+    fn all_same_char(idx: usize, strs: &Vec<String>) -> bool {
+        if idx >= strs[0].len() {
+            return false;
+        }
+        let c = strs[0].as_bytes()[idx];
+        for s in strs.iter().skip(1) {
+            if idx >= s.len() || s.as_bytes()[idx] != c {
+                return false;
+            }
+        }
+        true
+    }
+
+    let mut idx = 0;
+    while all_same_char(idx, &strs) {
+        idx += 1;
+    }
+    strs[0][0..idx].to_string()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -106,5 +130,13 @@ mod tests {
     fn test_roman_to_int() {
         assert_eq!(roman_to_int(String::from("IV")), 4);
         assert_eq!(roman_to_int(String::from("MCMXCIV")), 1994);
+    }
+
+    #[test]
+    fn test_longest_common_prefix() {
+        assert_eq!(longest_common_prefix(vec![]), "".to_string());
+        assert_eq!(longest_common_prefix(vec![String::from("i")]), "i".to_string());
+        assert_eq!(longest_common_prefix(vec![String::from("i"), String::from("i")]), "i".to_string());
+        assert_eq!(longest_common_prefix(vec![String::from("ab"), String::from("ab"), String::from("abc")]), "ab".to_string());
     }
 }
